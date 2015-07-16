@@ -1,0 +1,34 @@
+{
+  "name": "lab-api-wrapper",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./lib/index",
+  "scripts": {
+    "test": "mocha --harmony --recursive tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/douglaslab/lab-api-wrapper.git"
+  },
+  "author": "Guy Vider",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/douglaslab/lab-api-wrapper/issues"
+  },
+  "homepage": "https://github.com/douglaslab/lab-api-wrapper#readme",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "moment": "^2.10.3",
+    "restify": "^3.0.3"
+  },
+  "devDependencies": {
+    "babel-eslint": "^3.1.23",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-eslint": "^0.15.0",
+    "gulp-mocha": "^2.1.2",
+    "istanbul-harmony": "^0.3.16",
+    "mocha": "^2.2.5",
+    "should": "^7.0.1"
+  }
+}
