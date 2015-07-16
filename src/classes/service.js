@@ -17,7 +17,7 @@ export default class Service {
     var hmac = crypto.createHmac('sha1', user.apiSecret).update(user.apiKey).digest('hex');
     var token = crypto.createHash('md5').update(hmac + timestamp).digest('hex');
     return {
-      'X-API-Authorization': `key={$user.apiKey}, token={$token}, ts={$timestamp}`
+      'X-API-Authorization': `key=${user.apiKey}, token=${token}, ts=${timestamp}`
     };
   }
 }

@@ -1,8 +1,8 @@
 'use strict';
 
 import Service from './service';
-import dbg from 'debug';
-var debug = dbg('items');
+import Debug from 'debug';
+var debug = Debug('items');
 
 export default class Items extends Service {
   constructor(apiUrl, version = '*') {
@@ -51,7 +51,21 @@ export default class Items extends Service {
       headers: this.generateAuthorizationHeader(user)
     };
     debug(options);
-    this.client.post(options, item, (err, req, res, response, item) => {
+    this.client.post(options, item, (err, req, res, result) => {
+      if(err) {
+        console.error(err);
+      }
+      debug(result);
+      callback(err, result);
+    });
+  }
+
+  updateItem(user, itemId, properties, callback, replace = false) {
+    let options = {
+      path: `${this.path}/${itemId}` + (replace ? '/true' : ''),
+      headers: this.generateAuthorizationHeader(user)
+    };
+    this.client.put(options, properties, (err, req, res, item) => {
       if(err) {
         console.error(err);
       }
@@ -59,20 +73,6 @@ export default class Items extends Service {
       callback(err, item);
     });
   }
-
-  updateItem(user, id, properties, callback, replace = false) {
-    let options = {
-      path: `${this.path}/${itemId}` + (replace ? '/true' : ''),
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.put(options, item, (err, req, res, item) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(item);
-      callback(err, item);
-    });
-  };
 
   deleteItem(user, itemId, callback) {
     let options = {
@@ -86,5 +86,5 @@ export default class Items extends Service {
       debug(result);
       callback(err, result);
     });
-  };
-};
+  }
+}
