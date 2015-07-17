@@ -12,15 +12,8 @@ export default class Users extends Service {
   }
 
   login(email, password, callback) {
-    // let options = {
-    //   path: `${this.path}/login`,
-    //   headers: {
-    //     authorization: 'Basic ' + new Buffer(`${email}:${password}`).toString('base64')
-    //   }
-    // };
     this.client.basicAuth(email, password);
     this.client.post(`${this.path}/login`, {}, (err, req, res, result) => {
-      console.log(res, err, result);
       if(err) {
         console.error(err);
       }

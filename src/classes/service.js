@@ -7,8 +7,7 @@ export default class Service {
   constructor(apiUrl, version = '*') {
     this.client = restify.createJsonClient({
       url: apiUrl,
-      version: version,
-      gzip: {}
+      version: version
     });
   }
 

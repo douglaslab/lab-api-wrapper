@@ -6,23 +6,21 @@ var should = require('should');
 var Users = require('../lib').Users;
 var users = new Users(API_URL);
 
-var randomUserName = function() {
-  return 'TEST' + Math.random().toString().slice(2, 11);
-};
-
 var generateRandomUser = function(permissionLevel) {
-  let randomUser = {
-    name: randomUserName(),
-    email: randomUser.name + '@example.com',
+  let name = 'TEST' + Math.random().toString().slice(2, 11);
+  return {
+    name: name,
+    email: name + '@example.com',
     password: 'blahblah',
     permissionLevel: permissionLevel,
     school: 'UCSF'
   };
-  return randomUser;
 };
 
 describe('Users unit tests', () => {
   let adminUser;
+  let newUser = generateRandomUser('USER');
+
   it('should login admin user', (done) => {
     users.login('test@ucsf.edu', 'password', (err, result) => {
       debug(result);
@@ -36,12 +34,17 @@ describe('Users unit tests', () => {
     });
   });
 
-  // var newUser = randomUser('ADMIN');
-  // it('should create a new user', (done) => {
-  //   users.createUser(adminUser, newUser, (err, result) => {
-
-  //   });
-  // });
+  it('should create a new user', (done) => {
+    users.createUser(adminUser, newUser, (err, result) => {
+      debug(result);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      result.data.should.have.property('apiKey');
+      result.data.should.have.property('apiSecret');
+      return done();
+    });
+  });
 
   // it('should Retrieve the created user', (done) => {
   //   let req = httpMocks.createRequest({params: {email: newUser.email}});
@@ -93,16 +96,12 @@ describe('Users unit tests', () => {
   //   });
   // });
 
-  // it('should Delete the created delete', (done) => {
-  //   let req = httpMocks.createRequest({params: {email: newUser.email}});
-  //   let res = httpMocks.createResponse();
-  //   users.delete(req, res, () => {
-  //     let result = JSON.parse(res._getData());
-  //     debug(result);
-  //     res.statusCode.should.equal(200);
-  //     result.should.have.property('error');
-  //     result.error.should.be.false;
-  //     return done();
-  //   });
-  // });
+  it('should Delete the created user', (done) => {
+    users.deleteUser(adminUser, newUser.email, (err, result) => {
+      debug(result);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      return done();
+    });
+  });
 });
