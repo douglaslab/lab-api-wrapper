@@ -12,13 +12,8 @@ export default class Users extends Service {
   }
 
   login(email, password, callback) {
-    let options = {
-      path: `${this.path}/login`,
-      headers: {
-        'Authorization': 'Basic ' + (new Buffer(`${email}${password}`)).toString('base64')
-      }
-    };
-    this.client.post(options, (err, req, res, result) => {
+    this.client.basicAuth(email, password);
+    this.client.post(`${this.path}/login`, {}, (err, req, res, result) => {
       if(err) {
         console.error(err);
       }
@@ -48,7 +43,7 @@ export default class Users extends Service {
     });
   }
 
-  getUsrByEmail(user, email, callback) {
+  getUserByEmail(user, email, callback) {
     let options = {
       path: `${this.path}/${email}`,
       headers: this.generateAuthorizationHeader(user)
