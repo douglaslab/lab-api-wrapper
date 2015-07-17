@@ -1,11 +1,11 @@
 'use strict';
 
 import crypto from 'crypto';
-import JsonClient from 'restify';
+import restify from 'restify';
 
 export default class Service {
   constructor(apiUrl, version = '*') {
-    this.client = new JsonClient({
+    this.client = restify.createJsonClient({
       url: apiUrl,
       version: version,
       gzip: {}
