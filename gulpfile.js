@@ -1,5 +1,5 @@
 'use strict';
-
+require('babel/register');  //to allow mocha to pick up babel
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 var babel = require('gulp-babel');
@@ -21,8 +21,8 @@ gulp.task('compile', function() {
 
 gulp.task('default', ['lint', 'compile']);
 
-gulp.task('test', ['default'], function() {
-  return gulp.src('test/*.js', {read: false})
+gulp.task('test', function() {
+  return gulp.src('tests/*.js', {read: false})
     .pipe(mocha());
 });
 
