@@ -2,7 +2,7 @@
 
 import Service from './service';
 import Debug from 'debug';
-var debug = Debug('items');
+var debug = Debug('service:items');
 
 export default class Items extends Service {
   constructor(apiUrl, version = '*') {
