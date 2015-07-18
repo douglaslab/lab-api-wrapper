@@ -2,7 +2,7 @@
 
 import Service from './service';
 import Debug from 'debug';
-var debug = Debug('admin');
+var debug = Debug('service:admin');
 
 export default class Users extends Service {
   constructor(apiUrl, version = '*') {
