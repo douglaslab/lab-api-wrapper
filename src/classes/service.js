@@ -15,21 +15,26 @@ export default class Service {
     debug('initializing REST client %s, version %s', apiUrl, version);
   }
 
-  generateAuthorizationHeader(user) {
+  generateAuthorizationHeader(apiKey, apiSecret) {
     var timestamp = parseInt(Date.now() / 1000, 10);
-    var hmac = crypto.createHmac('sha1', user.apiSecret).update(user.apiKey).digest('hex');
+    var hmac = crypto.createHmac('sha1', apiSecret).update(apiKey).digest('hex');
     var token = crypto.createHash('md5').update(hmac + timestamp).digest('hex');
+    return `key=${apiKey}, token=${token}, ts=${timestamp}`;
+  }
+
+  generateOptions(user, path = this.path) {
     return {
-      'X-API-Authorization': `key=${user.apiKey}, token=${token}, ts=${timestamp}`
+      path: path,
+      headers: {'X-API-Authorization': generateAuthorizationHeader(user.apiKey, user.apiSecret)}
     };
   }
 
-  handleResult(statusCode, err, result, callback) {
+  handleResult(err, req, res, result) {
     if(err) {
-      console.error(this.path, statusCode, err);
+      console.error(this.path, res.statusCode, err);
     }
     else {
-      debug('path: %s response: %s err: %s', this.path, statusCode, err);
+      debug('path: %s response: %s err: %s', this.path, res.statusCode, err);
     }
     callback(err, result);
   }

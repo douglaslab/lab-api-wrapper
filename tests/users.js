@@ -1,27 +1,22 @@
 'use strict';
 
-var debug = require('debug')('test:users');
-var helper = require('./helper');
-var should = require('should');
-var wrapper = require('../lib');
+import Debug from 'debug';
+import helper from './helper';
+import should from 'should';
+import wrapper from '../lib';
+var debug = Debug('test:users');
 var users = new wrapper.Users(helper.API_URL, helper.VERSION);
 
-describe('Users unit tests', () => {
+describe('Users functional tests', () => {
   let adminUser;
-  let newUser = helper.generateRandomUser('USER');
-
-  it('should login admin user', (done) => {
-    users.login('test@ucsf.edu', 'password', (err, result) => {
-      debug(result);
-      result.should.have.property('error');
-      result.error.should.be.false;
-      result.should.have.property('data');
-      result.data.should.have.property('apiKey');
-      result.data.should.have.property('apiSecret');
+  before((done) => {
+    helper.getAdminUserCredentials((result) => {
       adminUser = result.data;
-      return done();
+      done();
     });
   });
+
+  let newUser = helper.generateRandomUser('USER');
 
   it('should Create a new user', (done) => {
     users.createUser(adminUser, newUser, (err, result) => {
@@ -43,6 +38,18 @@ describe('Users unit tests', () => {
       result.should.have.property('data');
       result.data.should.have.property('email');
       result.data.email.should.equal(newUser.email);
+      return done();
+    });
+  });
+
+  it('should login the created user user', (done) => {
+    users.login(newUser.email, newUser.password, (err, result) => {
+      debug(result);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      result.data.should.have.property('apiKey');
+      result.data.should.have.property('apiSecret');
       return done();
     });
   });

@@ -13,14 +13,11 @@ export default class Users extends Service {
 
   login(email, password, callback) {
     this.client.basicAuth(email, password);
-    this.client.post(`${this.path}/login`, {}, (err, req, res, result) => this.handleResult(res.statusCode, err, result, callback));
+    this.client.post(`${this.path}/login`, {}, this.handleResult);
   }
 
   getUsers(user, callback) {
-    let options = {
-      path: this.path,
-      headers: this.generateAuthorizationHeader(user)
-    };
+    let options = this.generateOptions(user);
     this.client.get(options, (err, req, res, result) => {
       if(!err) {
         result.data = result.data.map((u) => {
@@ -30,39 +27,27 @@ export default class Users extends Service {
         });
       }
       debug(result);
-      this.handleResult(res.statusCode, err, result, callback);
+      this.handleResult(err, req, res, result);
     });
   }
 
   getUserByEmail(user, email, callback) {
-    let options = {
-      path: `${this.path}/${email}`,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.get(options, (err, req, res, result) => this.handleResult(res.statusCode, err, result, callback));
+    let options = this.generateOptions(user, `${this.path}/${email}`);
+    this.client.get(options, this.handleResult);
   }
 
   createUser(user, properties, callback) {
-    let options = {
-      path: this.path,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.post(options, properties, (err, req, res, result) => this.handleResult(res.statusCode, err, result, callback));
+    let options = this.generateOptions(user);
+    this.client.post(options, properties, this.handleResult);
   }
 
   updateUser(user, email, properties, callback) {
-    let options = {
-      path: `${this.path}/${email}`,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.put(options, properties, (err, req, res, result) => this.handleResult(res.statusCode, err, result, callback));
+    let options = this.generateOptions(user, `${this.path}/${email}`);
+    this.client.put(options, properties, this.handleResult);
   }
 
   deleteUser(user, email, callback) {
-    let options = {
-      path: `${this.path}/${email}`,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.del(options, (err, req, res, result) => this.handleResult(res.statusCode, err, result, callback));
+    let options = this.generateOptions(user, `${this.path}/${email}`);
+    this.client.del(options, this.handleResult);
   }
 }

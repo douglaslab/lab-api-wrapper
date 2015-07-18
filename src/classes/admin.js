@@ -11,49 +11,22 @@ export default class Users extends Service {
   }
 
   getApiHealth(callback) {
-    this.client.get(`${this.path}/health`, (err, req, res, body) => callback(err, body));
+    this.client.get(`${this.path}/health`, this.handleResult);
   }
 
   getLog(user, callback) {
-    let options = {
-      path: `${this.path}/admin/audit`,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.get(options, (err, req, res, result) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(result);
-      return callback(err, result);
-    });
+    let options = this.generateOptions(user, `${this.path}/audit`);
+    this.client.get(options, this.handleResult);
   }
 
   getPermissions(user, callback) {
-    let options = {
-      path: `${this.path}/admin/permissions`,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.get(options, (err, req, res, result) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(result);
-      return callback(err, result);
-    });
+    let options = this.generateOptions(user, `${this.path}/permissions`);
+    this.client.get(options, this.handleResult);
   }
 
   createPermission(user, permission, callback) {
-    let options = {
-      path: `${this.path}/admin/permissions`,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.post(options, permission, (err, req, res, result) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(result);
-      return callback(err, result);
-    });
+    let options = this.generateOptions(user, `${this.path}/permissions`);
+    this.client.post(options, permission, this.handleResult);
   }
 }
 
