@@ -11,17 +11,8 @@ export default class Items extends Service {
   }
 
   getItem(user, itemId, callback) {
-    let options = {
-      path: `${this.path}/${itemId}`,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.get(options, (err, req, res, items) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(items);
-      return callback(err, items);
-    });
+    let options = this.generateOptions(user, `${this.path}/${itemId}`);
+    this.client.get(options, this.handleResult);
   }
 
   getItems(user, callback, filter = null) {
@@ -32,59 +23,23 @@ export default class Items extends Service {
         path += `${key}=${filter[key]}`;
       });
     }
-    let options = {
-      path: path,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.get(options, (err, req, res, items) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(items);
-      return callback(err, items);
-    });
+    let options = this.generateOptions(user, path);
+    this.client.get(options, this.handleResult);
   }
 
   createItem(user, item, callback) {
-    let options = {
-      path: this.path,
-      headers: this.generateAuthorizationHeader(user)
-    };
+    let options = this.generateOptions(user);
     debug(options);
-    this.client.post(options, item, (err, req, res, result) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(result);
-      callback(err, result);
-    });
+    this.client.post(options, item, this.handleResult);
   }
 
   updateItem(user, itemId, properties, callback, replace = false) {
-    let options = {
-      path: `${this.path}/${itemId}` + (replace ? '/true' : ''),
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.put(options, properties, (err, req, res, item) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(item);
-      callback(err, item);
-    });
+    let options = this.generateOptions(user, `${this.path}/${itemId}` + (replace ? '/true' : ''));
+    this.client.put(options, properties, this.handleResult);
   }
 
   deleteItem(user, itemId, callback) {
-    let options = {
-      uri: `${this.path}/${itemId}`,
-      headers: this.generateAuthorizationHeader(user)
-    };
-    this.client.del(options, (err, req, res, result) => {
-      if(err) {
-        console.error(err);
-      }
-      debug(result);
-      callback(err, result);
-    });
+    let options = this.generateOptions(user, `${this.path}/${itemId}`);
+    this.client.del(options, this.handleResult);
   }
 }
