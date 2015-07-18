@@ -1,6 +1,7 @@
 'use strict';
+import Users from '../lib/classes/users';
 
-module.exports = {
+var Helper = {
   API_URL: 'http://localhost:3000',
   VERSION: '1.0',
   generateRandomUser: function(permissionLevel) {
@@ -12,5 +13,13 @@ module.exports = {
       permissionLevel: permissionLevel,
       school: 'UCSF'
     };
+  },
+  getAdminUserCredentials: function(callback) {
+    let users = new Users(Helper.API_URL, Helper.VERSION);
+    users.login('test@ucsf.edu', 'password', (err, result) => {
+      callback(result);
+    });
   }
 };
+
+export default Helper;
