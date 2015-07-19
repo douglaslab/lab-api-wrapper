@@ -1,5 +1,3 @@
-'use strict';
-
 import Admin from './classes/admin';
 import Items from './classes/items';
 import Users from './classes/users';
