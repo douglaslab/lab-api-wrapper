@@ -4,9 +4,7 @@ var debug = Debug('service:items');
 
 export default class Items extends Service {
   constructor(apiUrl, version = '*') {
-    super(apiUrl, version);
-    this.path = '/items';
-    debug(this.apiUrl, this.path, this.version);
+    super(apiUrl, version, '/items');
   }
 
   getItemById(user, itemId, callback) {
@@ -22,13 +20,13 @@ export default class Items extends Service {
         path += `${key}=${filter[key]}`;
       });
     }
+    debug(filter);
     let options = this.generateOptions(user, path);
     this.client.get(options, this.handleResult(callback));
   }
 
   createItem(user, item, callback) {
     let options = this.generateOptions(user);
-    debug(options);
     this.client.post(options, item, this.handleResult(callback));
   }
 

@@ -4,13 +4,14 @@ import Debug from 'debug';
 var debug = Debug('service:');
 
 export default class Service {
-  constructor(apiUrl, version = '*') {
+  constructor(apiUrl, version = '*', path = '/') {
     this.client = restify.createJsonClient({
       url: apiUrl,
       version: version,
       userAgent: 'DouglasLab API Wrapper'
     });
-    debug('initializing REST client %s, version %s', apiUrl, version);
+    this.path = path;
+    debug('initializing REST client %s, path: %s, version %s', apiUrl, path, version);
   }
 
   generateAuthorizationHeader(apiKey, apiSecret) {

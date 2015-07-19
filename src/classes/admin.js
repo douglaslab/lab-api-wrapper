@@ -4,9 +4,8 @@ var debug = Debug('service:admin');
 
 export default class Users extends Service {
   constructor(apiUrl, version = '*') {
-    super(apiUrl, version);
-    this.path = '/admin';
-    debug(this.apiUrl, this.path, this.version);
+    super(apiUrl, version, '/admin');
+    debug;
   }
 
   getApiHealth(callback) {
