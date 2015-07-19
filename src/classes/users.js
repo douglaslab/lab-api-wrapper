@@ -2,12 +2,11 @@ import Service from './service';
 import moment from 'moment';
 import Debug from 'debug';
 var debug = Debug('service:users');
+const TIME_FORMAT = 'MM/DD/YYYY hh:mm:ss';
 
 export default class Users extends Service {
   constructor(apiUrl, version = '*') {
-    super(apiUrl, version);
-    this.path = '/users';
-    debug(this.apiUrl, this.path, this.version);
+    super(apiUrl, version, '/users');
   }
 
   login(email, password, callback) {
@@ -20,8 +19,8 @@ export default class Users extends Service {
     this.client.get(options, (err, req, res, result) => {
       if(!err) {
         result.data = result.data.map((u) => {
-          u.created = moment(u.created).format('MM/DD/YYYY hh:mm:ss');
-          u.modified = moment(u.modified).format('MM/DD/YYYY hh:mm:ss');
+          u.created = moment(u.created).format(TIME_FORMAT);
+          u.modified = moment(u.modified).format(TIME_FORMAT);
           return u;
         });
       }

@@ -16,9 +16,7 @@ const VERSION = '1.0';
 
 var getAdminUserCredentials = function(callback) {
   let users = new Users(API_URL, VERSION);
-  users.login('test@ucsf.edu', 'password', (err, result) => {
-    callback(result);
-  });
+  users.login('test@ucsf.edu', 'password', (err, result) => callback(result));
 };
 
 export default {
