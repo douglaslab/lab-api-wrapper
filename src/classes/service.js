@@ -1,5 +1,3 @@
-'use strict';
-
 import crypto from 'crypto';
 import restify from 'restify';
 import Debug from 'debug';
@@ -25,17 +23,19 @@ export default class Service {
   generateOptions(user, path = this.path) {
     return {
       path: path,
-      headers: {'X-API-Authorization': generateAuthorizationHeader(user.apiKey, user.apiSecret)}
+      headers: {'X-API-Authorization': this.generateAuthorizationHeader(user.apiKey, user.apiSecret)}
     };
   }
 
-  handleResult(err, req, res, result) {
-    if(err) {
-      console.error(this.path, res.statusCode, err);
-    }
-    else {
-      debug('path: %s response: %s err: %s', this.path, res.statusCode, err);
-    }
-    callback(err, result);
+  handleResult(callback) {
+    return function(err, req, res, result) {
+      if(err) {
+        console.error(req.path, res.statusCode, err);
+      }
+      else {
+        debug('path: %s response: %s err: %s', req.path, res.statusCode, err);
+      }
+      this.callback(err, result);
+    }.bind({callback: callback});
   }
 }

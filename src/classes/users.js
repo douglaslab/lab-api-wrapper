@@ -1,5 +1,3 @@
-'use strict';
-
 import Service from './service';
 import moment from 'moment';
 import Debug from 'debug';
@@ -9,11 +7,12 @@ export default class Users extends Service {
   constructor(apiUrl, version = '*') {
     super(apiUrl, version);
     this.path = '/users';
+    debug(this.apiUrl, this.path, this.version);
   }
 
   login(email, password, callback) {
     this.client.basicAuth(email, password);
-    this.client.post(`${this.path}/login`, {}, this.handleResult);
+    this.client.post(`${this.path}/login`, {}, this.handleResult(callback));
   }
 
   getUsers(user, callback) {
@@ -27,27 +26,27 @@ export default class Users extends Service {
         });
       }
       debug(result);
-      this.handleResult(err, req, res, result);
+      this.handleResult(callback)(err, req, res, result);
     });
   }
 
   getUserByEmail(user, email, callback) {
     let options = this.generateOptions(user, `${this.path}/${email}`);
-    this.client.get(options, this.handleResult);
+    this.client.get(options, this.handleResult(callback));
   }
 
   createUser(user, properties, callback) {
     let options = this.generateOptions(user);
-    this.client.post(options, properties, this.handleResult);
+    this.client.post(options, properties, this.handleResult(callback));
   }
 
   updateUser(user, email, properties, callback) {
     let options = this.generateOptions(user, `${this.path}/${email}`);
-    this.client.put(options, properties, this.handleResult);
+    this.client.put(options, properties, this.handleResult(callback));
   }
 
   deleteUser(user, email, callback) {
     let options = this.generateOptions(user, `${this.path}/${email}`);
-    this.client.del(options, this.handleResult);
+    this.client.del(options, this.handleResult(callback));
   }
 }
