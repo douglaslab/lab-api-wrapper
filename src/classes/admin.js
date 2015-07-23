@@ -9,16 +9,26 @@ export default class Users extends Service {
   }
 
   getApiHealth(callback) {
-    this.client.get(`${this.path}/health`, this.handleResult(callback));
+    this.client.get(`/health`, this.handleResult(callback));
   }
 
-  getLog(user, callback) {
+  getAuditLog(user, callback) {
     let options = this.generateOptions(user, `${this.path}/audit`);
     this.client.get(options, this.handleResult(callback));
   }
 
   getPermissions(user, callback) {
     let options = this.generateOptions(user, `${this.path}/permissions`);
+    this.client.get(options, this.handleResult(callback));
+  }
+
+  getPermissionByElement(user, element, callback) {
+    let options = this.generateOptions(user, `${this.path}/permissions?element=${element}`);
+    this.client.get(options, this.handleResult(callback));
+  }
+
+  getPermissionByElementAndAction(user, element, action, callback) {
+    let options = this.generateOptions(user, `${this.path}/permissions?element=${element}&action=${action}`);
     this.client.get(options, this.handleResult(callback));
   }
 
