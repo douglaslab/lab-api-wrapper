@@ -48,4 +48,24 @@ export default class Users extends Service {
     let options = this.generateOptions(user, `${this.path}/${email}`);
     this.client.del(options, this.handleResult(callback));
   }
+
+  getServices(user, email, callback) {
+    let options = this.generateOptions(user, `${this.path}/${email}/service`);
+    this.client.get(options, this.handleResult(callback));
+  }
+
+  getServiceByName(user, email, serviceName, callback) {
+    let options = this.generateOptions(user, `${this.path}/${email}/service/${serviceName}`);
+    this.client.get(options, this.handleResult(callback));
+  }
+
+  createService(user, email, serviceProperties, callback) {
+    let options = this.generateOptions(user, `${this.path}/${email}/service`);
+    this.client.post(options, serviceProperties, this.handleResult(callback));
+  }
+
+  deleteService(user, email, serviceName, callback) {
+    let options = this.generateOptions(user, `${this.path}/${email}/service/${serviceName}`);
+    this.client.del(options, this.handleResult(callback));
+  }
 }

@@ -1,8 +1,6 @@
-'use strict';
-
 import Debug from 'debug';
-import helper from './helper';
 import should from 'should';
+import helper from './helper';
 import wrapper from '../lib';
 var debug = Debug('test:users');
 var users = new wrapper.Users(helper.API_URL, helper.VERSION);
@@ -75,6 +73,57 @@ describe('Users functional tests', () => {
       result.should.have.property('data');
       result.data.should.have.property('name');
       result.data.name.should.equal(newUser.name);
+      return done();
+    });
+  });
+
+  let newService = {
+    serviceName: 'Dropbox',
+    token: 'mytoken',
+    additional: 'additional info'
+  };
+
+  it('should Create a cloud service for user', (done) => {
+    users.createService(adminUser, newUser.email, newService, (err, result) => {
+      debug(result);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      return done();
+    });
+  });
+
+  it('should Retrieve cloud service from user', (done) => {
+    users.getServiceByName(adminUser, newUser.email, newService.serviceName, (err, result) => {
+      debug(result);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      result.data.should.be.an.instanceOf(Array);
+      result.data.should.have.lengthOf(1);
+      result.data[0].serviceName.should.equal(newService.serviceName);
+      return done();
+    });
+  });
+
+  it('should Retrieve all cloud services from user', (done) => {
+    users.getServices(adminUser, newUser.email, (err, result) => {
+      debug(result);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      result.data.should.be.an.instanceOf(Array);
+      result.data[0].serviceName.should.equal(newService.serviceName);
+      return done();
+    });
+  });
+
+  it('should Delete the cloud service from user', (done) => {
+    users.deleteService(adminUser, newUser.email, newService.serviceName, (err, result) => {
+      debug(result);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
       return done();
     });
   });
