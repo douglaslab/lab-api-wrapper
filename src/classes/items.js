@@ -30,8 +30,13 @@ export default class Items extends Service {
     this.client.post(options, item, this.handleResult(callback));
   }
 
-  updateItem(user, itemId, properties, callback, replace = false) {
-    let options = this.generateOptions(user, `${this.path}/${itemId}` + (replace ? '/true' : ''));
+  updateItem(user, itemId, properties, callback) {
+    let options = this.generateOptions(user, `${this.path}/${itemId}`);
+    this.client.put(options, properties, this.handleResult(callback));
+  }
+
+  replaceItem(user, itemId, properties, callback) {
+    let options = this.generateOptions(user, `${this.path}/${itemId}/true`);
     this.client.put(options, properties, this.handleResult(callback));
   }
 
