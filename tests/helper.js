@@ -1,6 +1,6 @@
 import Users from '../lib/classes/users';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3000';//'https://bionano-api.herokuapp.com';
 const VERSION = '1.0';
 
  var generateRandomUser = function(permissionLevel) {
