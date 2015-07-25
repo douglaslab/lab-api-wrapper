@@ -1,8 +1,8 @@
 {
   "name": "lab-api-wrapper",
-  "descrition": "wrapper libarary fro the DouglasLab API",
+  "description": "wrapper libarary for the Douglas Lab API",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "main": "./lib/index",
   "scripts": {
     "build": "gulp",
