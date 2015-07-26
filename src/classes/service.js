@@ -1,42 +1,73 @@
 import crypto from 'crypto';
-import restify from 'restify';
+import request from 'superagent';
 import Debug from 'debug';
-var debug = Debug('service:');
+var debug = Debug('service');
 
 export default class Service {
-  constructor(apiUrl, version = '*', path = '/') {
-    this.client = restify.createJsonClient({
-      url: apiUrl,
-      version: version,
-      userAgent: 'DouglasLab API Wrapper'
-    });
-    this.path = path;
-    debug('initializing REST client %s, path: %s, version %s', apiUrl, path, version);
+  constructor(apiUrl, options) {
+    this.apiUrl = apiUrl;
+    this.version = options.version || '*';
+    this.userAgent = options.userAgent || 'DouglasLab API Wrapper';
+    this.request = request;
+    debug('initializing wrapper: url: %s, path: %s, ua %s', this.apiUrl, this.version, this.userAgent);
   }
 
-  generateAuthorizationHeader(apiKey, apiSecret) {
+  _generateAuthorizationHeader(apiKey, apiSecret) {
     var timestamp = parseInt(Date.now() / 1000, 10);
     var hmac = crypto.createHmac('sha1', apiSecret).update(apiKey).digest('hex');
     var token = crypto.createHash('md5').update(hmac + timestamp).digest('hex');
     return `key=${apiKey}, token=${token}, ts=${timestamp}`;
   }
 
-  generateOptions(user, path = this.path) {
-    return {
-      path: path,
-      headers: {'X-API-Authorization': this.generateAuthorizationHeader(user.apiKey, user.apiSecret)}
+  generateHeaders(user) {
+    let headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Accept-Version': this.version,
+      'User-Agent': this.userAgent
     };
+    if(user) {
+      headers['X-API-Authorization'] = this._generateAuthorizationHeader(user.apiKey, user.apiSecret);
+    }
+    return headers;
   }
 
   handleResult(callback) {
-    return function(err, req, res, result) {
+    return function(err, res) {
       if(err) {
-        console.error(req.path, res.statusCode, err);
+        console.error(err.response.error);
       }
-      else {
-        debug('path: %s response: %s err: %s', req.path, res.statusCode, err);
-      }
-      this.callback(err, result);
+      this.callback(res.body);
     }.bind({callback: callback});
+  }
+
+  get(user, path, callback) {
+    request
+      .get(this.apiUrl + path)
+      .set(this.generateHeaders(user))
+      .end(this.handleResult(callback));
+  }
+
+  post(user, path, body, callback) {
+    request
+      .post(this.apiUrl + path)
+      .set(this.generateHeaders(user))
+      .send(body)
+      .end(this.handleResult(callback));
+  }
+
+  put(user, path, body, callback) {
+    request
+      .put(this.apiUrl + path)
+      .set(this.generateHeaders(user))
+      .send(body)
+      .end(this.handleResult(callback));
+  }
+
+  del(user, path, callback) {
+    request
+      .del(this.apiUrl + path)
+      .set(this.generateHeaders(user))
+      .end(this.handleResult(callback));
   }
 }

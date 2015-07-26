@@ -1,8 +1,8 @@
 {
   "name": "lab-api-wrapper",
-  "descrition": "wrapper libarary fro the DouglasLab API",
+  "description": "wrapper libarary for the Douglas Lab API",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "main": "./lib/index",
   "scripts": {
     "build": "gulp",
@@ -20,11 +20,10 @@
   "homepage": "https://github.com/douglaslab/lab-api-wrapper#readme",
   "dependencies": {
     "debug": "^2.2.0",
-    "moment": "^2.10.3",
-    "restify": "^3.0.3"
+    "superagent": "^1.2.0"
   },
   "devDependencies": {
-    "babel": "^5.6.23",
+    "babel": "^5.8.5",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-eslint": "^0.15.0",

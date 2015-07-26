@@ -1,15 +1,13 @@
 import Service from './service';
-import Debug from 'debug';
-var debug = Debug('service:items');
 
 export default class Items extends Service {
-  constructor(apiUrl, version = '*') {
-    super(apiUrl, version, '/items');
+  constructor(apiUrl, options) {
+    super(apiUrl, options);
+    this.path = '/items';
   }
 
   getItemById(user, itemId, callback) {
-    let options = this.generateOptions(user, `${this.path}/${itemId}`);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, `${this.path}/${itemId}`, callback);
   }
 
   getItems(user, callback, filter = null) {
@@ -20,28 +18,22 @@ export default class Items extends Service {
         path += `${key}=${filter[key]}`;
       });
     }
-    debug(filter);
-    let options = this.generateOptions(user, path);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, path, callback);
   }
 
   createItem(user, item, callback) {
-    let options = this.generateOptions(user);
-    this.client.post(options, item, this.handleResult(callback));
+    return this.post(user, this.path, item, callback);
   }
 
   updateItem(user, itemId, properties, callback) {
-    let options = this.generateOptions(user, `${this.path}/${itemId}`);
-    this.client.put(options, properties, this.handleResult(callback));
+    return this.put(user, `${this.path}/${itemId}`, properties, callback);
   }
 
   replaceItem(user, itemId, properties, callback) {
-    let options = this.generateOptions(user, `${this.path}/${itemId}/true`);
-    this.client.put(options, properties, this.handleResult(callback));
+    return this.put(user, `${this.path}/${itemId}/true`, properties, callback);
   }
 
   deleteItem(user, itemId, callback) {
-    let options = this.generateOptions(user, `${this.path}/${itemId}`);
-    this.client.del(options, this.handleResult(callback));
+    return this.del(user, `${this.path}/${itemId}`, callback);
   }
 }

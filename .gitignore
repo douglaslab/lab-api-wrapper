@@ -33,3 +33,6 @@ docs
 
 # Ignore lib folder, as we'll rebuild it every time
 lib
+
+# Don't include the params file
+tests/params.json

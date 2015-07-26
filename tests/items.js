@@ -24,7 +24,7 @@ describe('Items functional tests', function() {
   };
 
   it('should Create a new item', (done) => {
-    items.createItem(adminUser, newItem, (err, result) => {
+    items.createItem(adminUser, newItem, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -38,7 +38,7 @@ describe('Items functional tests', function() {
   });
 
   it('should fail to create an empty item', (done) => {
-    items.createItem(adminUser, {}, (err, result) => {
+    items.createItem(adminUser, {}, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.true;
@@ -47,7 +47,7 @@ describe('Items functional tests', function() {
   });
 
   it('should Retrieve the created item', (done) => {
-    items.getItemById(adminUser, id, (err, result) => {
+    items.getItemById(adminUser, id, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -60,7 +60,7 @@ describe('Items functional tests', function() {
   });
 
   it('should fail to Retrieve non-existing item', (done) => {
-    items.getItemById(adminUser, '123123123123', (err, result) => {
+    items.getItemById(adminUser, '123123123123', (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.true;
@@ -69,7 +69,7 @@ describe('Items functional tests', function() {
   });
 
   it('should fail to Retrieve item with illegal id', (done) => {
-    items.getItemById(adminUser, 'blahblah', (err, result) => {
+    items.getItemById(adminUser, 'blahblah', (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.true;
@@ -78,7 +78,7 @@ describe('Items functional tests', function() {
   });
 
   it('should Retrieve all items', (done) => {
-    items.getItems(adminUser, (err, result) => {
+    items.getItems(adminUser, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -91,7 +91,7 @@ describe('Items functional tests', function() {
 
   it('should Update the properties of the created item', (done) => {
     newItem.name = 'updated';
-    items.updateItem(adminUser, id, newItem, (err, result) => {
+    items.updateItem(adminUser, id, newItem, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -109,7 +109,7 @@ describe('Items functional tests', function() {
       prop1: 'val1',
       prop2: 'val2'
     };
-    items.replaceItem(adminUser, id, item, (err, result) => {
+    items.replaceItem(adminUser, id, item, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -125,7 +125,7 @@ describe('Items functional tests', function() {
 
   it('should fail to Update non-existing item', (done) => {
     newItem.name = 'updated';
-    items.updateItem(adminUser, '123123123123', newItem, (err, result) => {
+    items.updateItem(adminUser, '123123123123', newItem, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.true;
@@ -135,7 +135,7 @@ describe('Items functional tests', function() {
 
   it('should fail to Update item with illegal id', (done) => {
     newItem.name = 'updated';
-    items.updateItem(adminUser, 'blahblah', newItem, (err, result) => {
+    items.updateItem(adminUser, 'blahblah', newItem, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.true;
@@ -144,7 +144,7 @@ describe('Items functional tests', function() {
   });
 
   it('should Delete the created item', (done) => {
-    items.deleteItem(adminUser, id, (err, result) => {
+    items.deleteItem(adminUser, id, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -153,7 +153,7 @@ describe('Items functional tests', function() {
   });
 
   it('should fail to Delete item with illegal id', (done) => {
-    items.deleteItem(adminUser, 'blahblah', (err, result) => {
+    items.deleteItem(adminUser, 'blahblah', (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.true;

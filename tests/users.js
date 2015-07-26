@@ -17,7 +17,7 @@ describe('Users functional tests', () => {
   let newUser = helper.generateRandomUser('USER');
 
   it('should Create a new user', (done) => {
-    users.createUser(adminUser, newUser, (err, result) => {
+    users.createUser(adminUser, newUser, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -29,7 +29,7 @@ describe('Users functional tests', () => {
   });
 
   it('should Retrieve the created user', (done) => {
-    users.getUserByEmail(adminUser, newUser.email, (err, result) => {
+    users.getUserByEmail(adminUser, newUser.email, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -41,7 +41,7 @@ describe('Users functional tests', () => {
   });
 
   it('should login the created user user', (done) => {
-    users.login(newUser.email, newUser.password, (err, result) => {
+    users.login(newUser.email, newUser.password, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -53,7 +53,7 @@ describe('Users functional tests', () => {
   });
 
   it('should Retrieve all users', (done) => {
-    users.getUsers(adminUser, (err, result) => {
+    users.getUsers(adminUser, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -66,7 +66,7 @@ describe('Users functional tests', () => {
 
   it('should Update the created user', (done) => {
     newUser.name = 'updated user';
-    users.updateUser(adminUser, newUser.email, newUser, (err, result) => {
+    users.updateUser(adminUser, newUser.email, newUser, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -84,7 +84,7 @@ describe('Users functional tests', () => {
   };
 
   it('should Create a cloud service for user', (done) => {
-    users.createService(adminUser, newUser.email, newService, (err, result) => {
+    users.createService(adminUser, newUser.email, newService, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -94,7 +94,7 @@ describe('Users functional tests', () => {
   });
 
   it('should Retrieve cloud service from user', (done) => {
-    users.getServiceByName(adminUser, newUser.email, newService.serviceName, (err, result) => {
+    users.getServiceByName(adminUser, newUser.email, newService.serviceName, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -107,7 +107,7 @@ describe('Users functional tests', () => {
   });
 
   it('should Retrieve all cloud services from user', (done) => {
-    users.getServices(adminUser, newUser.email, (err, result) => {
+    users.getServices(adminUser, newUser.email, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -119,7 +119,7 @@ describe('Users functional tests', () => {
   });
 
   it('should Delete the cloud service from user', (done) => {
-    users.deleteService(adminUser, newUser.email, newService.serviceName, (err, result) => {
+    users.deleteService(adminUser, newUser.email, newService.serviceName, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
@@ -129,7 +129,7 @@ describe('Users functional tests', () => {
   });
 
   it('should Delete the created user', (done) => {
-    users.deleteUser(adminUser, newUser.email, (err, result) => {
+    users.deleteUser(adminUser, newUser.email, (result) => {
       debug(result);
       result.should.have.property('error');
       result.error.should.be.false;
