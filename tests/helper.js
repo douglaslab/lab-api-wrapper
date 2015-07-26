@@ -1,7 +1,5 @@
 import Users from '../lib/classes/users';
-
-const API_URL = 'http://localhost:3000';//'https://bionano-api.herokuapp.com';
-const VERSION = '1.0';
+import params from './params';
 
  var generateRandomUser = function(permissionLevel) {
   let name = 'TEST' + Math.random().toString().slice(2, 11);
@@ -15,13 +13,13 @@ const VERSION = '1.0';
 };
 
 var getAdminUserCredentials = function(callback) {
-  let users = new Users(API_URL, VERSION);
-  users.login('test@ucsf.edu', 'password', (err, result) => callback(result));
+  let users = new Users(params.API_URL, {version: params.VERSION});
+  users.login(params.ADMIN_USER, params.ADMIN_PASSWORD, (result) => callback(result));
 };
 
 export default {
-  API_URL: API_URL,
-  VERSION: VERSION,
+  API_URL: params.API_URL,
+  VERSION: params.VERSION,
   generateRandomUser: generateRandomUser,
   getAdminUserCredentials: getAdminUserCredentials
 };

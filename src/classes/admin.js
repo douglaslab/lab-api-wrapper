@@ -1,40 +1,33 @@
 import Service from './service';
-import Debug from 'debug';
-var debug = Debug('service:admin');
 
 export default class Users extends Service {
-  constructor(apiUrl, version = '*') {
-    super(apiUrl, version, '/admin');
-    debug;
+  constructor(apiUrl, options) {
+    super(apiUrl, options);
+    this.path = '/admin';
   }
 
   getApiHealth(callback) {
-    this.client.get(`/health`, this.handleResult(callback));
+    return this.get(null, `/health`, callback);
   }
 
   getAuditLog(user, callback) {
-    let options = this.generateOptions(user, `${this.path}/audit`);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, `${this.path}/audit`, callback);
   }
 
   getPermissions(user, callback) {
-    let options = this.generateOptions(user, `${this.path}/permissions`);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, `${this.path}/permissions`, callback);
   }
 
   getPermissionByElement(user, element, callback) {
-    let options = this.generateOptions(user, `${this.path}/permissions?element=${element}`);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, `${this.path}/permissions?element=${element}`, callback);
   }
 
   getPermissionByElementAndAction(user, element, action, callback) {
-    let options = this.generateOptions(user, `${this.path}/permissions?element=${element}&action=${action}`);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, `${this.path}/permissions?element=${element}&action=${action}`, callback);
   }
 
   createPermission(user, permission, callback) {
-    let options = this.generateOptions(user, `${this.path}/permissions`);
-    this.client.post(options, permission, this.handleResult(callback));
+    return this.post(user, `${this.path}/permissions`, permission, callback);
   }
 }
 

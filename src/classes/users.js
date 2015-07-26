@@ -1,71 +1,52 @@
 import Service from './service';
-import moment from 'moment';
-import Debug from 'debug';
-var debug = Debug('service:users');
-const TIME_FORMAT = 'MM/DD/YYYY hh:mm:ss';
 
 export default class Users extends Service {
-  constructor(apiUrl, version = '*') {
-    super(apiUrl, version, '/users');
+  constructor(apiUrl, options) {
+    super(apiUrl, options);
+    this.path = '/users';
   }
 
   login(email, password, callback) {
-    this.client.basicAuth(email, password);
-    this.client.post(`${this.path}/login`, {}, this.handleResult(callback));
+    return this.request
+      .post(`${this.apiUrl}${this.path}/login`)
+      .set(this.generateHeaders())
+      .auth(email, password)
+      .end(this.handleResult(callback));
   }
 
   getUsers(user, callback) {
-    let options = this.generateOptions(user);
-    this.client.get(options, (err, req, res, result) => {
-      if(!err) {
-        result.data = result.data.map((u) => {
-          u.created = moment(u.created).format(TIME_FORMAT);
-          u.modified = moment(u.modified).format(TIME_FORMAT);
-          return u;
-        });
-      }
-      debug(result);
-      this.handleResult(callback)(err, req, res, result);
-    });
+    return this.get(user, this.path, callback);
   }
 
   getUserByEmail(user, email, callback) {
-    let options = this.generateOptions(user, `${this.path}/${email}`);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, `${this.path}/${email}`, callback);
   }
 
   createUser(user, properties, callback) {
-    let options = this.generateOptions(user);
-    this.client.post(options, properties, this.handleResult(callback));
+    return this.post(user, this.path, properties, callback);
   }
 
   updateUser(user, email, properties, callback) {
-    let options = this.generateOptions(user, `${this.path}/${email}`);
-    this.client.put(options, properties, this.handleResult(callback));
+    return this.put(user, `${this.path}/${email}`, properties, callback);
   }
 
   deleteUser(user, email, callback) {
-    let options = this.generateOptions(user, `${this.path}/${email}`);
-    this.client.del(options, this.handleResult(callback));
+    return this.del(user, `${this.path}/${email}`, callback);
   }
 
   getServices(user, email, callback) {
-    let options = this.generateOptions(user, `${this.path}/${email}/service`);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, `${this.path}/${email}/service`, callback);
   }
 
   getServiceByName(user, email, serviceName, callback) {
-    let options = this.generateOptions(user, `${this.path}/${email}/service/${serviceName}`);
-    this.client.get(options, this.handleResult(callback));
+    return this.get(user, `${this.path}/${email}/service/${serviceName}`, callback);
   }
 
   createService(user, email, serviceProperties, callback) {
-    let options = this.generateOptions(user, `${this.path}/${email}/service`);
-    this.client.post(options, serviceProperties, this.handleResult(callback));
+    return this.post(user, `${this.path}/${email}/service`, serviceProperties, callback);
   }
 
   deleteService(user, email, serviceName, callback) {
-    let options = this.generateOptions(user, `${this.path}/${email}/service/${serviceName}`);
-    this.client.del(options, this.handleResult(callback));
+    return this.del(user, `${this.path}/${email}/service/${serviceName}`, callback);
   }
 }
