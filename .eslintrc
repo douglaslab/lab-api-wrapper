@@ -4,8 +4,8 @@
  	  "node": true,
     "mocha": true
   },
-  ecmaFeatures: {
-    modules: true
+  "ecmaFeatures": {
+    "modules": true
   },
   "rules": {
     "quotes": [2, "single", "avoid-escape"],
