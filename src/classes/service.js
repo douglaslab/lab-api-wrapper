@@ -8,6 +8,7 @@ export default class Service {
     this.apiUrl = apiUrl;
     this.version = options.version || '*';
     this.userAgent = options.userAgent || 'DouglasLab API Wrapper';
+    this.returnPromises = options.returnPromises || false;
     this.request = request;
     debug('initializing wrapper: url: %s, path: %s, ua %s', this.apiUrl, this.version, this.userAgent);
   }
