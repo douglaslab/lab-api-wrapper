@@ -36,7 +36,7 @@ The parameters allow us to use different versions and instances of the API with 
   $ npm i --save lab-api-wrapper
   $ npm i --save async  #see comment below
   ```
-4. Create a file called `index.js`:
+1. Create a file called `index.js`:
 
   ```javascript
   import wrapper from 'lab-api-writer';
@@ -76,3 +76,22 @@ The parameters allow us to use different versions and instances of the API with 
 1. Run `node index.js`
 
 **PS:** the sample code makes use of the `async` module, to synchronize the various calls - but you can use any alternative (such as promises, Q, generators, etc.).
+
+## Tests
+
+Before running tests, add a file called `params.json` to the tests folder:
+
+```json
+{
+  "API_URL": "url of the API endpoint",
+  "VERSION": "1.0.0",
+  "ADMIN_USER": "email of an admin user",
+  "ADMIN_PASSWORD": "password of an admin user"
+}
+```
+
+Then run:
+
+```console
+$ npm test
+```
