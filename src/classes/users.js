@@ -7,7 +7,7 @@ export default class Users extends Service {
   }
 
   login(email, password, callback) {
-    return this.request
+    this.request
       .post(`${this.apiUrl}${this.path}/login`)
       .set(this.generateHeaders())
       .auth(email, password)

@@ -14,7 +14,7 @@ import params from './params';
 
 var getAdminUserCredentials = function(callback) {
   let users = new Users(params.API_URL, {version: params.VERSION});
-  users.login(params.ADMIN_USER, params.ADMIN_PASSWORD, (result) => callback(result));
+  users.login(params.ADMIN_USER, params.ADMIN_PASSWORD, callback);
 };
 
 export default {

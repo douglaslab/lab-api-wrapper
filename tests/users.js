@@ -7,10 +7,13 @@ var users = new wrapper.Users(helper.API_URL, helper.VERSION);
 
 describe('Users functional tests', () => {
   let adminUser;
+
   before((done) => {
-    helper.getAdminUserCredentials((result) => {
+    helper.getAdminUserCredentials((err, result) => {
+      debug(result);
+      should.not.exist(err);
       adminUser = result.data;
-      done();
+      return done();
     });
   });
 

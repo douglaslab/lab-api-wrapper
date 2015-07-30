@@ -11,9 +11,11 @@ describe('Items functional tests', function() {
   let id;
 
   before((done) => {
-    helper.getAdminUserCredentials((result) => {
+    helper.getAdminUserCredentials((err, result) => {
+      debug(result);
+      should.not.exist(err);
       adminUser = result.data;
-      done();
+      return done();
     });
   });
 
@@ -24,8 +26,9 @@ describe('Items functional tests', function() {
   };
 
   it('should Create a new item', (done) => {
-    items.createItem(adminUser, newItem, (result) => {
+    items.createItem(adminUser, newItem, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -38,8 +41,9 @@ describe('Items functional tests', function() {
   });
 
   it('should fail to create an empty item', (done) => {
-    items.createItem(adminUser, {}, (result) => {
+    items.createItem(adminUser, {}, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
       return done();
@@ -47,8 +51,9 @@ describe('Items functional tests', function() {
   });
 
   it('should Retrieve the created item', (done) => {
-    items.getItemById(adminUser, id, (result) => {
+    items.getItemById(adminUser, id, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -60,8 +65,9 @@ describe('Items functional tests', function() {
   });
 
   it('should fail to Retrieve non-existing item', (done) => {
-    items.getItemById(adminUser, '123123123123', (result) => {
+    items.getItemById(adminUser, '123123123123', (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
       return done();
@@ -69,8 +75,9 @@ describe('Items functional tests', function() {
   });
 
   it('should fail to Retrieve item with illegal id', (done) => {
-    items.getItemById(adminUser, 'blahblah', (result) => {
+    items.getItemById(adminUser, 'blahblah', (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
       return done();
@@ -78,8 +85,9 @@ describe('Items functional tests', function() {
   });
 
   it('should Retrieve all items', (done) => {
-    items.getItems(adminUser, (result) => {
+    items.getItems(adminUser, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -91,8 +99,9 @@ describe('Items functional tests', function() {
 
   it('should Update the properties of the created item', (done) => {
     newItem.name = 'updated';
-    items.updateItem(adminUser, id, newItem, (result) => {
+    items.updateItem(adminUser, id, newItem, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -109,8 +118,9 @@ describe('Items functional tests', function() {
       prop1: 'val1',
       prop2: 'val2'
     };
-    items.replaceItem(adminUser, id, item, (result) => {
+    items.replaceItem(adminUser, id, item, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -125,8 +135,9 @@ describe('Items functional tests', function() {
 
   it('should fail to Update non-existing item', (done) => {
     newItem.name = 'updated';
-    items.updateItem(adminUser, '123123123123', newItem, (result) => {
+    items.updateItem(adminUser, '123123123123', newItem, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
       return done();
@@ -135,8 +146,9 @@ describe('Items functional tests', function() {
 
   it('should fail to Update item with illegal id', (done) => {
     newItem.name = 'updated';
-    items.updateItem(adminUser, 'blahblah', newItem, (result) => {
+    items.updateItem(adminUser, 'blahblah', newItem, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
       return done();
@@ -144,8 +156,9 @@ describe('Items functional tests', function() {
   });
 
   it('should Delete the created item', (done) => {
-    items.deleteItem(adminUser, id, (result) => {
+    items.deleteItem(adminUser, id, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       return done();
@@ -153,8 +166,9 @@ describe('Items functional tests', function() {
   });
 
   it('should fail to Delete item with illegal id', (done) => {
-    items.deleteItem(adminUser, 'blahblah', (result) => {
+    items.deleteItem(adminUser, 'blahblah', (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
       return done();

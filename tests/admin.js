@@ -10,16 +10,18 @@ describe('Admin functional tests', function() {
   let adminUser;
 
   before((done) => {
-    helper.getAdminUserCredentials((result) => {
+    helper.getAdminUserCredentials((err, result) => {
       debug(result);
+      should.not.exist(err);
       adminUser = result.data;
-      return done();
+      done();
     });
   });
 
   it('should return API health', (done) => {
-    admin.getApiHealth((result) => {
+    admin.getApiHealth((err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -28,8 +30,9 @@ describe('Admin functional tests', function() {
   });
 
   it('should return audit log', (done) => {
-    admin.getAuditLog(adminUser, (result) => {
+    admin.getAuditLog(adminUser, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -44,8 +47,9 @@ describe('Admin functional tests', function() {
   };
 
   it('should Create a new permission', (done) => {
-    admin.createPermission(adminUser, newPermission, (result) => {
+    admin.createPermission(adminUser, newPermission, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -61,8 +65,9 @@ describe('Admin functional tests', function() {
       action: 'delete',
       permissionRequired: 'MANAGER'
     };
-    admin.createPermission(adminUser, permission, (result) => {
+    admin.createPermission(adminUser, permission, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
       result.should.have.property('data');
@@ -72,8 +77,9 @@ describe('Admin functional tests', function() {
   });
 
   it('should Retrieve all permissions', (done) => {
-    admin.getPermissions(adminUser, (result) => {
+    admin.getPermissions(adminUser, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -83,8 +89,9 @@ describe('Admin functional tests', function() {
   });
 
   it('should Retrieve permission by element', (done) => {
-    admin.getPermissionByElement(adminUser, newPermission.element, (result) => {
+    admin.getPermissionByElement(adminUser, newPermission.element, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -95,8 +102,9 @@ describe('Admin functional tests', function() {
   });
 
   it('should Retrieve permission by element and action', (done) => {
-    admin.getPermissionByElementAndAction(adminUser, newPermission.element, newPermission.action, (result) => {
+    admin.getPermissionByElementAndAction(adminUser, newPermission.element, newPermission.action, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');

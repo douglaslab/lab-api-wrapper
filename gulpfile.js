@@ -1,4 +1,3 @@
-'use strict';
 require('babel/register');  //to allow mocha to pick up babel
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
@@ -22,8 +21,14 @@ gulp.task('compile', function() {
 gulp.task('default', ['lint', 'compile']);
 
 gulp.task('test', function() {
-  return gulp.src('tests/*.js', {read: false})
-    .pipe(mocha({timeout: 5000}));
+  var argv = require('yargs').argv;
+  var options = {
+    timeout: argv.timeout || 5000,
+    grep: argv.test
+  };
+  var stream = argv.file ? 'tests/' + argv.file + '.js' : 'tests/*.js';
+  return gulp.src(stream, {read: false})
+    .pipe(mocha(options));
 });
 
 gulp.task('watch', function() {
