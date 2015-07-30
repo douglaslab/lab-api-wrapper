@@ -20,8 +20,9 @@ describe('Users functional tests', () => {
   let newUser = helper.generateRandomUser('USER');
 
   it('should Create a new user', (done) => {
-    users.createUser(adminUser, newUser, (result) => {
+    users.createUser(adminUser, newUser, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -32,8 +33,9 @@ describe('Users functional tests', () => {
   });
 
   it('should Retrieve the created user', (done) => {
-    users.getUserByEmail(adminUser, newUser.email, (result) => {
+    users.getUserByEmail(adminUser, newUser.email, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -44,8 +46,9 @@ describe('Users functional tests', () => {
   });
 
   it('should login the created user user', (done) => {
-    users.login(newUser.email, newUser.password, (result) => {
+    users.login(newUser.email, newUser.password, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -56,8 +59,9 @@ describe('Users functional tests', () => {
   });
 
   it('should Retrieve all users', (done) => {
-    users.getUsers(adminUser, (result) => {
+    users.getUsers(adminUser, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -69,8 +73,9 @@ describe('Users functional tests', () => {
 
   it('should Update the created user', (done) => {
     newUser.name = 'updated user';
-    users.updateUser(adminUser, newUser.email, newUser, (result) => {
+    users.updateUser(adminUser, newUser.email, newUser, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -87,8 +92,9 @@ describe('Users functional tests', () => {
   };
 
   it('should Create a cloud service for user', (done) => {
-    users.createService(adminUser, newUser.email, newService, (result) => {
+    users.createService(adminUser, newUser.email, newService, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -97,8 +103,9 @@ describe('Users functional tests', () => {
   });
 
   it('should Retrieve cloud service from user', (done) => {
-    users.getServiceByName(adminUser, newUser.email, newService.serviceName, (result) => {
+    users.getServiceByName(adminUser, newUser.email, newService.serviceName, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -110,8 +117,9 @@ describe('Users functional tests', () => {
   });
 
   it('should Retrieve all cloud services from user', (done) => {
-    users.getServices(adminUser, newUser.email, (result) => {
+    users.getServices(adminUser, newUser.email, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -122,8 +130,9 @@ describe('Users functional tests', () => {
   });
 
   it('should Delete the cloud service from user', (done) => {
-    users.deleteService(adminUser, newUser.email, newService.serviceName, (result) => {
+    users.deleteService(adminUser, newUser.email, newService.serviceName, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -132,8 +141,9 @@ describe('Users functional tests', () => {
   });
 
   it('should Delete the created user', (done) => {
-    users.deleteUser(adminUser, newUser.email, (result) => {
+    users.deleteUser(adminUser, newUser.email, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       return done();
