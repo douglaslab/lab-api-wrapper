@@ -3,7 +3,7 @@ import should from 'should';
 import helper from './helper';
 import wrapper from '../lib';
 var debug = Debug('test:users');
-var users = new wrapper.Users(helper.API_URL, helper.VERSION);
+var users = new wrapper.Users(helper.API_URL, {version: helper.VERSION});
 
 describe('Users functional tests', () => {
   let adminUser;
@@ -13,7 +13,7 @@ describe('Users functional tests', () => {
       debug(result);
       should.not.exist(err);
       adminUser = result.data;
-      return done();
+      done();
     });
   });
 
@@ -28,7 +28,7 @@ describe('Users functional tests', () => {
       result.should.have.property('data');
       result.data.should.have.property('apiKey');
       result.data.should.have.property('apiSecret');
-      return done();
+      done();
     });
   });
 
@@ -41,7 +41,7 @@ describe('Users functional tests', () => {
       result.should.have.property('data');
       result.data.should.have.property('email');
       result.data.email.should.equal(newUser.email);
-      return done();
+      done();
     });
   });
 
@@ -54,7 +54,7 @@ describe('Users functional tests', () => {
       result.should.have.property('data');
       result.data.should.have.property('apiKey');
       result.data.should.have.property('apiSecret');
-      return done();
+      done();
     });
   });
 
@@ -67,7 +67,7 @@ describe('Users functional tests', () => {
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
       result.data.filter(item => item.email === newUser.email).should.have.lengthOf(1);
-      return done();
+      done();
     });
   });
 
@@ -81,7 +81,7 @@ describe('Users functional tests', () => {
       result.should.have.property('data');
       result.data.should.have.property('name');
       result.data.name.should.equal(newUser.name);
-      return done();
+      done();
     });
   });
 
@@ -98,7 +98,7 @@ describe('Users functional tests', () => {
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
-      return done();
+      done();
     });
   });
 
@@ -112,7 +112,7 @@ describe('Users functional tests', () => {
       result.data.should.be.an.instanceOf(Array);
       result.data.should.have.lengthOf(1);
       result.data[0].serviceName.should.equal(newService.serviceName);
-      return done();
+      done();
     });
   });
 
@@ -125,7 +125,7 @@ describe('Users functional tests', () => {
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
       result.data[0].serviceName.should.equal(newService.serviceName);
-      return done();
+      done();
     });
   });
 
@@ -136,7 +136,7 @@ describe('Users functional tests', () => {
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
-      return done();
+      done();
     });
   });
 
@@ -146,7 +146,7 @@ describe('Users functional tests', () => {
       should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
-      return done();
+      done();
     });
   });
 });

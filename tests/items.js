@@ -3,7 +3,7 @@ import should from 'should';
 import helper from './helper';
 import wrapper from '../lib';
 var debug = Debug('test:items');
-var items = new wrapper.Items(helper.API_URL, helper.VERSION);
+var items = new wrapper.Items(helper.API_URL, {version: helper.VERSION});
 
 describe('Items functional tests', function() {
   should;
@@ -15,7 +15,7 @@ describe('Items functional tests', function() {
       debug(result);
       should.not.exist(err);
       adminUser = result.data;
-      return done();
+      done();
     });
   });
 
@@ -36,7 +36,7 @@ describe('Items functional tests', function() {
       result.data.should.have.property('properties');
       result.data.properties.name.should.equal(newItem.name);
       id = result.data.id;
-      return done();
+      done();
     });
   });
 
@@ -46,7 +46,7 @@ describe('Items functional tests', function() {
       should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
-      return done();
+      done();
     });
   });
 
@@ -60,7 +60,7 @@ describe('Items functional tests', function() {
       result.data.should.have.property('id');
       result.data.should.have.property('properties');
       result.data.id.should.equal(id);
-      return done();
+      done();
     });
   });
 
@@ -70,7 +70,7 @@ describe('Items functional tests', function() {
       should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
-      return done();
+      done();
     });
   });
 
@@ -80,7 +80,7 @@ describe('Items functional tests', function() {
       should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
-      return done();
+      done();
     });
   });
 
@@ -93,7 +93,7 @@ describe('Items functional tests', function() {
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
       result.data.filter(item => item.id === id).should.have.lengthOf(1);
-      return done();
+      done();
     });
   });
 
@@ -109,7 +109,7 @@ describe('Items functional tests', function() {
       result.data.should.have.property('properties');
       result.data.properties.should.have.property('name');
       result.data.properties.name.should.equal(newItem.name);
-      return done();
+      done();
     });
   });
 
@@ -129,7 +129,7 @@ describe('Items functional tests', function() {
       result.data.properties.prop1.should.equal(item.prop1);
       result.data.properties.prop2.should.equal(item.prop2);
       Object.keys(result.data.properties).length.should.equal(Object.keys(item).length);
-      return done();
+      done();
     });
   });
 
@@ -140,7 +140,7 @@ describe('Items functional tests', function() {
       should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
-      return done();
+      done();
     });
   });
 
@@ -151,7 +151,7 @@ describe('Items functional tests', function() {
       should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
-      return done();
+      done();
     });
   });
 
@@ -161,7 +161,7 @@ describe('Items functional tests', function() {
       should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
-      return done();
+      done();
     });
   });
 
@@ -171,7 +171,7 @@ describe('Items functional tests', function() {
       should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
-      return done();
+      done();
     });
   });
 });

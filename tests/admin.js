@@ -25,7 +25,7 @@ describe('Admin functional tests', function() {
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
-      return done();
+      done();
     });
   });
 
@@ -55,7 +55,7 @@ describe('Admin functional tests', function() {
       result.should.have.property('data');
       result.data.should.have.property('element');
       result.data.element.should.equal(newPermission.element);
-      return done();
+      done();
     });
   });
 
@@ -72,7 +72,7 @@ describe('Admin functional tests', function() {
       result.error.should.be.true;
       result.should.have.property('data');
       result.data.should.equal('Permission validation failed');
-      return done();
+      done();
     });
   });
 
@@ -84,7 +84,7 @@ describe('Admin functional tests', function() {
       result.error.should.be.false;
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
-      return done();
+      done();
     });
   });
 
@@ -97,7 +97,7 @@ describe('Admin functional tests', function() {
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
       result.data.filter(permission => permission.element === newPermission.element && permission.action === newPermission.action).should.have.lengthOf(1);
-      return done();
+      done();
     });
   });
 
@@ -110,7 +110,7 @@ describe('Admin functional tests', function() {
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
       result.data.should.have.lengthOf(1);
-      return done();
+      done();
     });
   });
 });
