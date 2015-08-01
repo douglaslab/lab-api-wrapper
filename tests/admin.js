@@ -10,26 +10,29 @@ describe('Admin functional tests', function() {
   let adminUser;
 
   before((done) => {
-    helper.getAdminUserCredentials((result) => {
+    helper.getAdminUserCredentials((err, result) => {
       debug(result);
+      should.not.exist(err);
       adminUser = result.data;
-      return done();
+      done();
     });
   });
 
   it('should return API health', (done) => {
-    admin.getApiHealth((result) => {
+    admin.getApiHealth((err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
-      return done();
+      done();
     });
   });
 
   it('should return audit log', (done) => {
-    admin.getAuditLog(adminUser, (result) => {
+    admin.getAuditLog(adminUser, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
@@ -44,14 +47,15 @@ describe('Admin functional tests', function() {
   };
 
   it('should Create a new permission', (done) => {
-    admin.createPermission(adminUser, newPermission, (result) => {
+    admin.createPermission(adminUser, newPermission, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
       result.data.should.have.property('element');
       result.data.element.should.equal(newPermission.element);
-      return done();
+      done();
     });
   });
 
@@ -61,48 +65,52 @@ describe('Admin functional tests', function() {
       action: 'delete',
       permissionRequired: 'MANAGER'
     };
-    admin.createPermission(adminUser, permission, (result) => {
+    admin.createPermission(adminUser, permission, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.true;
       result.should.have.property('data');
       result.data.should.equal('Permission validation failed');
-      return done();
+      done();
     });
   });
 
   it('should Retrieve all permissions', (done) => {
-    admin.getPermissions(adminUser, (result) => {
+    admin.getPermissions(adminUser, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
-      return done();
+      done();
     });
   });
 
   it('should Retrieve permission by element', (done) => {
-    admin.getPermissionByElement(adminUser, newPermission.element, (result) => {
+    admin.getPermissionByElement(adminUser, newPermission.element, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
       result.data.filter(permission => permission.element === newPermission.element && permission.action === newPermission.action).should.have.lengthOf(1);
-      return done();
+      done();
     });
   });
 
   it('should Retrieve permission by element and action', (done) => {
-    admin.getPermissionByElementAndAction(adminUser, newPermission.element, newPermission.action, (result) => {
+    admin.getPermissionByElementAndAction(adminUser, newPermission.element, newPermission.action, (err, result) => {
       debug(result);
+      should.not.exist(err);
       result.should.have.property('error');
       result.error.should.be.false;
       result.should.have.property('data');
       result.data.should.be.an.instanceOf(Array);
       result.data.should.have.lengthOf(1);
-      return done();
+      done();
     });
   });
 });

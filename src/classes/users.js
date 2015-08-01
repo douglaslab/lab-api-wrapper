@@ -7,11 +7,24 @@ export default class Users extends Service {
   }
 
   login(email, password, callback) {
-    return this.request
-      .post(`${this.apiUrl}${this.path}/login`)
+    let agent = this.request.post(`${this.apiUrl}${this.path}/login`)
       .set(this.generateHeaders())
-      .auth(email, password)
-      .end(this.handleResult(callback));
+      .auth(email, password);
+    if(this.returnPromise) {
+      return new Promise((resolve, reject) => {
+        agent.end((err, res) => {
+          if(err) {
+            reject(res.error);
+          }
+          else {
+            resolve(res.body);
+          }
+        });
+      });
+    }
+    else {
+      agent.end(this.handleResult(callback));
+    }
   }
 
   getUsers(user, callback) {

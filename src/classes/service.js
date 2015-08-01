@@ -8,7 +8,7 @@ export default class Service {
     this.apiUrl = apiUrl;
     this.version = options.version || '*';
     this.userAgent = options.userAgent || 'DouglasLab API Wrapper';
-    this.returnPromises = options.returnPromises || false;
+    this.returnPromise = options.returnPromise || false;
     this.request = request;
     debug('initializing wrapper: url: %s, path: %s, ua %s', this.apiUrl, this.version, this.userAgent);
   }
@@ -18,6 +18,28 @@ export default class Service {
     var hmac = crypto.createHmac('sha1', apiSecret).update(apiKey).digest('hex');
     var token = crypto.createHash('md5').update(hmac + timestamp).digest('hex');
     return `key=${apiKey}, token=${token}, ts=${timestamp}`;
+  }
+
+  _request(user, method, path, payload, callback) {
+    var agent = this.request(method, this.apiUrl + path).set(this.generateHeaders(user));
+    if(payload) {
+      agent.send(payload);
+    }
+    if(this.returnPromise) {
+      return new Promise((resolve, reject) => {
+        agent.end((err, res) => {
+          if(err) {
+            reject(res.error);
+          }
+          else {
+            resolve(res.body);
+          }
+        });
+      });
+    }
+    else {
+      agent.end(this.handleResult(callback));
+    }
   }
 
   generateHeaders(user) {
@@ -33,42 +55,31 @@ export default class Service {
     return headers;
   }
 
-  handleResult(callback) {
+  handleResult(cb) {
     return function(err, res) {
-      if(err) {
-        console.error(err.response.error);
+      if(err && err.code && err.code.includes('ECONNREFUSED')) {
+        console.error(`cannot contact API at ${this.apiUrl}`);
+        this.callback(err, {error: true, data: `cannot contact API at ${this.apiUrl}`});
       }
-      this.callback(res.body);
-    }.bind({callback: callback});
+      else {
+        this.callback(null, res.body);
+      }
+    }.bind({callback: cb, apiUrl: this.apiUrl});
   }
 
   get(user, path, callback) {
-    request
-      .get(this.apiUrl + path)
-      .set(this.generateHeaders(user))
-      .end(this.handleResult(callback));
+    return this._request(user, 'GET', path, null, callback);
   }
 
   post(user, path, body, callback) {
-    request
-      .post(this.apiUrl + path)
-      .set(this.generateHeaders(user))
-      .send(body)
-      .end(this.handleResult(callback));
+    return this._request(user, 'POST', path, body, callback);
   }
 
   put(user, path, body, callback) {
-    request
-      .put(this.apiUrl + path)
-      .set(this.generateHeaders(user))
-      .send(body)
-      .end(this.handleResult(callback));
+    return this._request(user, 'PUT', path, body, callback);
   }
 
   del(user, path, callback) {
-    request
-      .del(this.apiUrl + path)
-      .set(this.generateHeaders(user))
-      .end(this.handleResult(callback));
+    return this._request(user, 'DELETE', path, null, callback);
   }
 }
