@@ -21,8 +21,7 @@ export default class Service {
   }
 
   _request(user, method, path, payload, callback) {
-    var agent = this.request(method, this.apiUrl + path)
-      .set(this.generateHeaders(user));
+    var agent = this.request(method, this.apiUrl + path).set(this.generateHeaders(user));
     if(payload) {
       agent.send(payload);
     }
@@ -69,36 +68,18 @@ export default class Service {
   }
 
   get(user, path, callback) {
-    // request
-    //   .get(this.apiUrl + path)
-    //   .set(this.generateHeaders(user))
-    //   .end(this.handleResult(callback));
     return this._request(user, 'GET', path, null, callback);
   }
 
   post(user, path, body, callback) {
-    // request
-    //   .post(this.apiUrl + path)
-    //   .set(this.generateHeaders(user))
-    //   .send(body)
-    //   .end(this.handleResult(callback));
     return this._request(user, 'POST', path, body, callback);
   }
 
   put(user, path, body, callback) {
-    // request
-    //   .put(this.apiUrl + path)
-    //   .set(this.generateHeaders(user))
-    //   .send(body)
-    //   .end(this.handleResult(callback));
     return this._request(user, 'PUT', path, body, callback);
   }
 
   del(user, path, callback) {
-    // request
-    //   .del(this.apiUrl + path)
-    //   .set(this.generateHeaders(user))
-    //   .end(this.handleResult(callback));
     return this._request(user, 'DELETE', path, null, callback);
   }
 }
