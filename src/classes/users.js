@@ -1,5 +1,6 @@
 import Service from './service';
 
+//parser for photo
 function binaryParser(res, callback) {
   res.setEncoding('binary');
   res.text = '';
