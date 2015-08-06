@@ -1,5 +1,13 @@
 import Service from './service';
 
+//parser for photo
+function binaryParser(res, callback) {
+  res.setEncoding('binary');
+  res.text = '';
+  res.on('data', chunk => {res.text += chunk; });
+  res.on('end', () => callback(null, new Buffer(res.text, 'binary')));
+}
+
 export default class Users extends Service {
   constructor(apiUrl, options) {
     super(apiUrl, options);
@@ -10,6 +18,27 @@ export default class Users extends Service {
     let agent = this.request.post(`${this.apiUrl}${this.path}/login`)
       .set(this.generateHeaders())
       .auth(email, password);
+    if(this.returnPromise) {
+      return new Promise((resolve, reject) => {
+        agent.end((err, res) => {
+          if(err) {
+            reject(res.error);
+          }
+          else {
+            resolve(res.body);
+          }
+        });
+      });
+    }
+    else {
+      agent.end(this.handleResult(callback));
+    }
+  }
+
+  loginWithSlack(handle, pin, callback) {
+    let agent = this.request.post(`${this.apiUrl}${this.path}/loginwithslack`)
+      .set(this.generateHeaders())
+      .auth(handle, pin);
     if(this.returnPromise) {
       return new Promise((resolve, reject) => {
         agent.end((err, res) => {
@@ -61,5 +90,55 @@ export default class Users extends Service {
 
   deleteService(user, email, serviceName, callback) {
     return this.del(user, `${this.path}/${email}/service/${serviceName}`, callback);
+  }
+
+  getPhoto(email, callback) {
+    let agent = this.request.get(`${this.apiUrl}${this.path}/photo/${email}`)
+      .set(this.generateHeaders(null, {'Accept': 'application/octet-stream'}))
+      .buffer(true)
+      .parse(binaryParser);
+    if(this.returnPromise) {
+      return new Promise((resolve, reject) => {
+        agent.end((err, res) => {
+          if(err) {
+            reject(err);
+          }
+          else {
+            resolve(res.body);
+          }
+        });
+      });
+    }
+    else {
+      agent.end((err, res) => {
+        if(err) {
+            callback(err);
+          }
+          else {
+            callback(null, res.body);
+          }
+      });
+    }
+  }
+
+  setPhoto(email, filePath, callback) {
+   let agent = this.request.post(`${this.apiUrl}${this.path}/photo/${email}`)
+      .set(this.generateHeaders(null, {'Content-Type': 'multipart/form-data'}))
+      .attach('photo', filePath);
+    if(this.returnPromise) {
+      return new Promise((resolve, reject) => {
+        agent.end((err, res) => {
+          if(err) {
+            reject(res.error);
+          }
+          else {
+            resolve(res.body);
+          }
+        });
+      });
+    }
+    else {
+      agent.end(this.handleResult(callback));
+    }
   }
 }

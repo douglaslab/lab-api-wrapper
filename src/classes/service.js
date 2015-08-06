@@ -42,13 +42,17 @@ export default class Service {
     }
   }
 
-  generateHeaders(user) {
+  generateHeaders(user, overrideContentType) {
     let headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
       'Accept-Version': this.version,
       'User-Agent': this.userAgent
     };
+    if(overrideContentType) {
+      Object.assign(headers, overrideContentType);
+    }
+    else {
+      Object.assign(headers, {'Accept': 'application/json'}, {'Content-Type': 'application/json'});
+    }
     if(user) {
       headers['X-API-Authorization'] = this._generateAuthorizationHeader(user.apiKey, user.apiSecret);
     }

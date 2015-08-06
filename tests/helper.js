@@ -7,8 +7,10 @@ import params from './params';
     name: name,
     email: name + '@example.com',
     password: 'blahblah',
+    pin: '47103',
+    color: '#5f94cc',
     permissionLevel: permissionLevel,
-    school: 'UCSF'
+    additional: {comment: 'test user'}
   };
 };
 
