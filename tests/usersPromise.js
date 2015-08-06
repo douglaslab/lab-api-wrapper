@@ -91,10 +91,12 @@ describe('Users functional tests withe Promise', () => {
   });
 
   let newService = {
-    serviceName: 'Dropbox',
+    serviceName: 'Slack',
+    handle: 'jimmyTheKnife222',
     token: 'mytoken',
-    additional: 'additional info'
+    additional: {info: 'additional info'}
   };
+
 
   it('should Create a cloud service for user', (done) => {
     users.createService(adminUser, newUser.email, newService)
@@ -137,6 +139,20 @@ describe('Users functional tests withe Promise', () => {
       .catch(err => done(err));
   });
 
+  it('should login with Slack handle and PIN', (done) => {
+    users.loginWithSlack(newService.handle, newUser.pin)
+      .then(result => {
+        debug(result);
+        result.should.have.property('error');
+        result.error.should.be.false;
+        result.should.have.property('data');
+        result.data.should.have.property('email');
+        result.data.email.should.equal(newUser.email);
+        return done();
+      })
+      .catch(err => done(err));
+  });
+
   it('should Delete the cloud service from user', (done) => {
     users.deleteService(adminUser, newUser.email, newService.serviceName)
       .then(result => {
@@ -144,6 +160,26 @@ describe('Users functional tests withe Promise', () => {
         result.should.have.property('error');
         result.error.should.be.false;
         result.should.have.property('data');
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should Upload user photo', (done) => {
+    users.setPhoto(newUser.email, __dirname + '/logo.png')
+      .then(result => {
+        debug(result);
+        result.should.have.property('error');
+        result.error.should.be.false;
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should Get user photo', (done) => {
+    users.getPhoto(newUser.email)
+      .then(result => {
+        should.exist(result.length);
         done();
       })
       .catch(err => done(err));

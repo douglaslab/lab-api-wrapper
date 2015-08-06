@@ -86,9 +86,10 @@ describe('Users functional tests', () => {
   });
 
   let newService = {
-    serviceName: 'Dropbox',
+    serviceName: 'Slack',
+    handle: 'jimmyTheKnife222',
     token: 'mytoken',
-    additional: 'additional info'
+    additional: {info: 'additional info'}
   };
 
   it('should Create a cloud service for user', (done) => {
@@ -129,6 +130,19 @@ describe('Users functional tests', () => {
     });
   });
 
+  it('should login with Slack handle and PIN', (done) => {
+    users.loginWithSlack(newService.handle, newUser.pin, (err, result) => {
+      debug(result);
+      should.not.exist(err);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      result.data.should.have.property('email');
+      result.data.email.should.equal(newUser.email);
+      return done();
+    });
+  });
+
   it('should Delete the cloud service from user', (done) => {
     users.deleteService(adminUser, newUser.email, newService.serviceName, (err, result) => {
       debug(result);
@@ -137,6 +151,24 @@ describe('Users functional tests', () => {
       result.error.should.be.false;
       result.should.have.property('data');
       done();
+    });
+  });
+
+  it('should Upload user photo', (done) => {
+    users.setPhoto(newUser.email, __dirname + '/logo.png', (err, result) => {
+      debug(result);
+      should.not.exist(err);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      done();
+    });
+  });
+
+  it('should Get user photo', (done) => {
+    users.getPhoto(newUser.email, (err, result) => {
+      should.not.exist(err);
+      should.exist(result.length);
+      done(err);
     });
   });
 
