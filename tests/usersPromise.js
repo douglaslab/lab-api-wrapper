@@ -5,7 +5,7 @@ import wrapper from '../lib';
 var debug = Debug('test:users');
 var users = new wrapper.Users(helper.API_URL, {version: helper.VERSION, returnPromise: true});
 
-describe('Users functional tests withe Promise', () => {
+describe('Users functional tests with Promises', () => {
   let adminUser;
 
   before((done) => {
@@ -166,7 +166,7 @@ describe('Users functional tests withe Promise', () => {
   });
 
   it('should Upload user photo', (done) => {
-    users.setPhoto(newUser.email, __dirname + '/logo.png')
+    users.setPhoto(adminUser, newUser.email, __dirname + '/logo.png')
       .then(result => {
         debug(result);
         result.should.have.property('error');
@@ -177,9 +177,33 @@ describe('Users functional tests withe Promise', () => {
   });
 
   it('should Get user photo', (done) => {
-    users.getPhoto(newUser.email)
+    users.getPhoto(adminUser, newUser.email)
       .then(result => {
         should.exist(result.length);
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should Deactivate user', (done) => {
+    users.deactivateUser(adminUser, newUser.email)
+      .then(result => {
+        result.should.have.property('error');
+        result.error.should.be.false;
+        result.should.have.property('data');
+        result.data.includes('deactivate').should.be.true;
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should Activate user', (done) => {
+    users.activateUser(adminUser, newUser.email)
+      .then(result => {
+        result.should.have.property('error');
+        result.error.should.be.false;
+        result.should.have.property('data');
+        result.data.includes('activate').should.be.true;
         done();
       })
       .catch(err => done(err));

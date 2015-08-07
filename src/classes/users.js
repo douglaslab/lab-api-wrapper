@@ -72,6 +72,14 @@ export default class Users extends Service {
     return this.put(user, `${this.path}/${email}`, properties, callback);
   }
 
+  activateUser(user, email, callback) {
+   return this.put(user, `${this.path}/${email}/active/true`, {}, callback);
+  }
+
+  deactivateUser(user, email, callback) {
+   return this.put(user, `${this.path}/${email}/active/false`, {}, callback);
+  }
+
   deleteUser(user, email, callback) {
     return this.del(user, `${this.path}/${email}`, callback);
   }
@@ -92,9 +100,9 @@ export default class Users extends Service {
     return this.del(user, `${this.path}/${email}/service/${serviceName}`, callback);
   }
 
-  getPhoto(email, callback) {
-    let agent = this.request.get(`${this.apiUrl}${this.path}/photo/${email}`)
-      .set(this.generateHeaders(null, {'Accept': 'application/octet-stream'}))
+  getPhoto(user, email, callback) {
+    let agent = this.request.get(`${this.apiUrl}${this.path}/${email}/photo`)
+      .set(this.generateHeaders(user, {'Accept': 'application/octet-stream'}))
       .buffer(true)
       .parse(binaryParser);
     if(this.returnPromise) {
@@ -121,9 +129,9 @@ export default class Users extends Service {
     }
   }
 
-  setPhoto(email, filePath, callback) {
-   let agent = this.request.post(`${this.apiUrl}${this.path}/photo/${email}`)
-      .set(this.generateHeaders(null, {'Content-Type': 'multipart/form-data'}))
+  setPhoto(user, email, filePath, callback) {
+   let agent = this.request.put(`${this.apiUrl}${this.path}/${email}/photo`)
+      .set(this.generateHeaders(user, {'Content-Type': 'multipart/form-data'}))
       .attach('photo', filePath);
     if(this.returnPromise) {
       return new Promise((resolve, reject) => {

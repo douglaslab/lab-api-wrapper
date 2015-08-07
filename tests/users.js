@@ -155,7 +155,7 @@ describe('Users functional tests', () => {
   });
 
   it('should Upload user photo', (done) => {
-    users.setPhoto(newUser.email, __dirname + '/logo.png', (err, result) => {
+    users.setPhoto(adminUser, newUser.email, __dirname + '/logo.png', (err, result) => {
       debug(result);
       should.not.exist(err);
       result.should.have.property('error');
@@ -165,9 +165,31 @@ describe('Users functional tests', () => {
   });
 
   it('should Get user photo', (done) => {
-    users.getPhoto(newUser.email, (err, result) => {
+    users.getPhoto(adminUser, newUser.email, (err, result) => {
       should.not.exist(err);
       should.exist(result.length);
+      done(err);
+    });
+  });
+
+  it('should Deactivate user', (done) => {
+    users.deactivateUser(adminUser, newUser.email, (err, result) => {
+      should.not.exist(err);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      result.data.includes('deactivate').should.be.true;
+      done(err);
+    });
+  });
+
+  it('should Activate user', (done) => {
+    users.activateUser(adminUser, newUser.email, (err, result) => {
+      should.not.exist(err);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      result.data.includes('activate').should.be.true;
       done(err);
     });
   });
