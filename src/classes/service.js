@@ -1,3 +1,4 @@
+require('babel/polyfill');
 import crypto from 'crypto';
 import request from 'superagent';
 import Debug from 'debug';
