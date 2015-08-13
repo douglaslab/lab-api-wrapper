@@ -77,7 +77,7 @@ describe('Users functional tests with Promises', () => {
 
   it('should Update the created user', (done) => {
     newUser.name = 'updated user';
-    users.updateUser(adminUser, newUser.email, newUser)
+    users.updateUser(adminUser, newUser.email, {name: newUser.name})
       .then(result => {
         debug(result);
         result.should.have.property('error');

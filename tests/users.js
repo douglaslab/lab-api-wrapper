@@ -73,7 +73,7 @@ describe('Users functional tests', () => {
 
   it('should Update the created user', (done) => {
     newUser.name = 'updated user';
-    users.updateUser(adminUser, newUser.email, newUser, (err, result) => {
+    users.updateUser(adminUser, newUser.email, {name: newUser.name}, (err, result) => {
       debug(result);
       should.not.exist(err);
       result.should.have.property('error');
