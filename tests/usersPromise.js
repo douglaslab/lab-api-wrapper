@@ -221,7 +221,7 @@ describe('Users functional tests with Promises', () => {
   });
 
   it('should Create a new user (no validation) and delete it', (done) => {
-    users.createUser(adminUser, newUser)
+    users.createNewUser(newUser)
       .then(result => {
         debug(result);
         result.should.have.property('error');
