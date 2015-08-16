@@ -18,42 +18,14 @@ export default class Users extends Service {
     let agent = this.request.post(`${this.apiUrl}${this.path}/login`)
       .set(this.generateHeaders())
       .auth(email, password);
-    if(this.returnPromise) {
-      return new Promise((resolve, reject) => {
-        agent.end((err, res) => {
-          if(err) {
-            reject(res.error);
-          }
-          else {
-            resolve(res.body);
-          }
-        });
-      });
-    }
-    else {
-      agent.end(this.handleResult(callback));
-    }
+    return this.handleSpecialCall(agent, callback);
   }
 
   loginWithSlack(handle, pin, callback) {
     let agent = this.request.post(`${this.apiUrl}${this.path}/loginwithslack`)
       .set(this.generateHeaders())
       .auth(handle, pin);
-    if(this.returnPromise) {
-      return new Promise((resolve, reject) => {
-        agent.end((err, res) => {
-          if(err) {
-            reject(res.error);
-          }
-          else {
-            resolve(res.body);
-          }
-        });
-      });
-    }
-    else {
-      agent.end(this.handleResult(callback));
-    }
+    return this.handleSpecialCall(agent, callback);
   }
 
   getUsers(user, callback) {
@@ -66,6 +38,13 @@ export default class Users extends Service {
 
   createUser(user, properties, callback) {
     return this.post(user, this.path, properties, callback);
+  }
+
+  createNewUser(properties, callback) {
+    let agent = this.request.post(`${this.apiUrl}${this.path}/new`)
+      .set(this.generateHeaders())
+      .send(properties);
+    return this.handleSpecialCall(agent, callback);
   }
 
   updateUser(user, email, properties, callback) {
@@ -133,20 +112,6 @@ export default class Users extends Service {
    let agent = this.request.put(`${this.apiUrl}${this.path}/${email}/photo`)
       .set(this.generateHeaders(user, {'Content-Type': 'multipart/form-data'}))
       .attach('photo', filePath);
-    if(this.returnPromise) {
-      return new Promise((resolve, reject) => {
-        agent.end((err, res) => {
-          if(err) {
-            reject(res.error);
-          }
-          else {
-            resolve(res.body);
-          }
-        });
-      });
-    }
-    else {
-      agent.end(this.handleResult(callback));
-    }
+    return this.handleSpecialCall(agent, callback);
   }
 }
