@@ -72,6 +72,24 @@ export default class Service {
     }.bind({callback: cb, apiUrl: this.apiUrl});
   }
 
+  handleSpecialCall(agent, callback) {
+    if(this.returnPromise) {
+      return new Promise((resolve, reject) => {
+        agent.end((err, res) => {
+          if(err) {
+            reject(res.error);
+          }
+          else {
+            resolve(res.body);
+          }
+        });
+      });
+    }
+    else {
+      agent.end(this.handleResult(callback));
+    }
+  }
+
   get(user, path, callback) {
     return this._request(user, 'GET', path, null, callback);
   }
