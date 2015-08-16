@@ -19,7 +19,7 @@ describe('Users functional tests', () => {
 
   let newUser = helper.generateRandomUser('USER');
 
-  it('should Create a new user', (done) => {
+  it('should Create a user', (done) => {
     users.createUser(adminUser, newUser, (err, result) => {
       debug(result);
       should.not.exist(err);
@@ -201,6 +201,19 @@ describe('Users functional tests', () => {
       result.should.have.property('error');
       result.error.should.be.false;
       done();
+    });
+  });
+
+  it('should Create a new user (no validation) and delete it', (done) => {
+    users.createUser(adminUser, newUser, (err, result) => {
+      debug(result);
+      should.not.exist(err);
+      result.should.have.property('error');
+      result.error.should.be.false;
+      result.should.have.property('data');
+      result.data.should.have.property('apiKey');
+      result.data.should.have.property('apiSecret');
+      users.deleteUser(adminUser, newUser.email, () => done());
     });
   });
 });

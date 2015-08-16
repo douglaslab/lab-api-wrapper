@@ -219,4 +219,18 @@ describe('Users functional tests with Promises', () => {
       })
       .catch(err => done(err));
   });
+
+  it('should Create a new user (no validation) and delete it', (done) => {
+    users.createUser(adminUser, newUser)
+      .then(result => {
+        debug(result);
+        result.should.have.property('error');
+        result.error.should.be.false;
+        result.should.have.property('data');
+        result.data.should.have.property('apiKey');
+        result.data.should.have.property('apiSecret');
+        users.deleteUser(adminUser, newUser.email).then(() => done());
+      })
+      .catch(err => done(err));
+  });
 });
