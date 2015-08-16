@@ -205,7 +205,7 @@ describe('Users functional tests', () => {
   });
 
   it('should Create a new user (no validation) and delete it', (done) => {
-    users.createUser(adminUser, newUser, (err, result) => {
+    users.createNewUser(newUser, (err, result) => {
       debug(result);
       should.not.exist(err);
       result.should.have.property('error');
