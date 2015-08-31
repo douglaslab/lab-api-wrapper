@@ -30,7 +30,7 @@ export default class Service {
       return new Promise((resolve, reject) => {
         agent.end((err, res) => {
           if(err) {
-            reject(res.error);
+            reject(res ? res.error : err);
           }
           else {
             resolve(res.body);
