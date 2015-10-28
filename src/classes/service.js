@@ -77,7 +77,13 @@ export default class Service {
       return new Promise((resolve, reject) => {
         agent.end((err, res) => {
           if(err) {
-            reject(res.error);
+            if(err.code && err.code.includes('ECONNREFUSED')) {
+              console.error(`cannot contact API at ${this.apiUrl}`);
+              reject({error: true, data: `cannot contact API at ${this.apiUrl}`});
+            }
+            else {
+              reject(res ? res.error : err);
+            }
           }
           else {
             resolve(res.body);
